@@ -1,0 +1,22 @@
+version: '2'
+services:
+    app:
+        image: openjdk:8-jdk-alpine
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: ./mvnw spring-boot:run
+    db:
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./db_init:/docker-entrypoint-initdb.d/
+        environment:
+            TEST_VAL: test_val
+            ST_VAL: st_val
+        command:
+            - localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8
+
